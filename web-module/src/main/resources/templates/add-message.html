@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Add message</title>
+</head>
+<body>
+    <form method="post" th:object="${AddMessage}">
+        <input type="text" name="text" placeholder="Write message">
+        <input type="text" name="tag" placeholder="Write tag">
+        <button type="submit">add message</button>
+    </form>
+</body>
+</html>

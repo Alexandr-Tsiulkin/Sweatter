@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.gmail.alexandr.tsiulkin.service</groupId>
     <artifactId>service-module</artifactId>
 
     <name>service-module</name>

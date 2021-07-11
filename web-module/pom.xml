@@ -21,13 +21,14 @@
         <project.version>1.0.0-SNAPSHOT</project.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <service-module.version>1.0.0-SNAPSHOT</service-module.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.gmail.alexandr.tsiulkin.service</groupId>
             <artifactId>service-module</artifactId>
-            <version>${project.version}</version>
+            <version>${service-module.version}</version>
         </dependency>
     </dependencies>
     <build>
