@@ -15,6 +15,7 @@ public class MessageConverterImpl implements MessageConverter {
         showMessageDTO.setId(message.getId());
         showMessageDTO.setText(message.getText());
         showMessageDTO.setTag(message.getTag());
+        showMessageDTO.setAuthor(message.getAuthor());
         return showMessageDTO;
     }
 

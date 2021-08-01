@@ -2,21 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <title>Login</title>
+    <title>Registration</title>
 </head>
 <body>
-<div th:if="${error}">
-    Invalid username and password.
+<div th:if="${param.error}">
+    User with this username exists.
 </div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-Login page
-<form th:action="@{/login}" method="post">
+Add new user
+<form th:action="@{/registration}" method="post">
     <div><label> User Name : <input type="text" name="username"/> </label></div>
     <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input type="submit" value="register"/></div>
 </form>
-<a th:href="@{/registration}">Add new user</a>
 </body>
 </html>

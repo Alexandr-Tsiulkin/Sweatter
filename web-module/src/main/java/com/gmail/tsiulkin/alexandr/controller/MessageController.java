@@ -1,9 +1,12 @@
 package com.gmail.tsiulkin.alexandr.controller;
 
 import com.gmail.tsiulkin.alexandr.service.MessageService;
+import com.gmail.tsiulkin.alexandr.service.exception.NotFoundException;
 import com.gmail.tsiulkin.alexandr.service.model.AddMessageDTO;
 import com.gmail.tsiulkin.alexandr.service.model.ShowMessageDTO;
+import com.gmail.tsiulkin.alexandr.service.model.UserLogin;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +32,7 @@ public class MessageController {
     @PostMapping("/messages")
     public String filter(@RequestParam String filter, Model model) {
         List<ShowMessageDTO> messagesByTag = messageService.findMessageByTag(filter);
-        model.addAttribute("messages",messagesByTag);
+        model.addAttribute("messages", messagesByTag);
         return "messages";
     }
 
@@ -40,8 +43,10 @@ public class MessageController {
     }
 
     @PostMapping("/messages/add")
-    public String add(@Valid AddMessageDTO addMessageDTO) {
-        messageService.persist(addMessageDTO);
+    public String add(
+            @AuthenticationPrincipal UserLogin user,
+            @Valid AddMessageDTO addMessageDTO) throws NotFoundException {
+        messageService.persist(addMessageDTO, user);
         return "redirect:/messages";
     }
 }
