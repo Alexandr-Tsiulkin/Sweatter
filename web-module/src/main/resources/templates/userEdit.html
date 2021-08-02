@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>User editor</title>
+</head>
+<body>
+<form method="post">
+    <input type="text" name="username" th:value="${user.username}">
+    <label th:each="role : ${roles}">
+        <div th:each="roleInUser : ${user.roles}">
+            <input type="checkbox" name="roleId" th:value="${role}" th:text="${role.name()}"
+                   th:if="${roleInUser.roleName.equals(role.name())}" checked/>
+            <input type="checkbox" name="roleId" th:value="${role}" th:text="${role.name()}"
+                   th:unless="${roleInUser.roleName.equals(role.name())}"/>
+        </div>
+    </label>
+    <button type="submit">save</button>
+</form>
+</body>
+</html>
