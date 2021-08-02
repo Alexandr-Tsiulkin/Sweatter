@@ -1,5 +1,6 @@
 package com.gmail.tsiulkin.alexandr.service.impl;
 
+import com.gmail.tsiulkin.alexandr.repository.RoleRepository;
 import com.gmail.tsiulkin.alexandr.repository.UserRepository;
 import com.gmail.tsiulkin.alexandr.repository.model.Role;
 import com.gmail.tsiulkin.alexandr.repository.model.User;
@@ -15,9 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Override
     @Transactional
@@ -38,10 +40,9 @@ public class UserServiceImpl implements UserService {
             String encodePassword = passwordEncoder.encode(addUserDTO.getPassword());
             user.setPassword(encodePassword);
             user.setActive(true);
-            Role role = new Role();
-            role.setUser(user);
-            role.setRoleName(RoleEnum.USER.name());
-            user.setRoles(Collections.singleton(role));
+            Role role = roleRepository.findByRoleName(RoleEnum.USER.name());
+            user.getRoles().add(role);
+            role.getUsers().add(user);
             userRepository.save(user);
             return true;
         } else {
@@ -59,7 +60,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean save(EditUserDTO user) {
-        return false;
+    @Transactional
+    public boolean edit(EditUserDTO editUser) {
+        Optional<User> userById = userRepository.findById(editUser.getId());
+        if (userById.isPresent()) {
+            User user = userById.get();
+            user.setUsername(editUser.getUsername());
+            if (!editUser.getRoleNames().isEmpty()) {
+                user.getRoles().clear();
+                for (String roleName : editUser.getRoleNames()) {
+                    Role role = roleRepository.findByRoleName(roleName);
+                    if (Objects.nonNull(role)) {
+                        user.getRoles().add(role);
+                        role.getUsers().add(user);
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

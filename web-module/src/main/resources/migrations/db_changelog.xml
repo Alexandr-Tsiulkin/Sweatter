@@ -15,6 +15,9 @@
             <column name="tag" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="2" author="alexandr.tsiulkin.gmail.com">
@@ -34,66 +37,47 @@
         </createTable>
     </changeSet>
     <changeSet id="3" author="alexandr.tsiulkin@gmail.com">
-        <createTable tableName="user_role">
+        <addForeignKeyConstraint baseTableName="message" baseColumnNames="user_id"
+                                 constraintName="fk_message_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="4" author="alexandr.tsiulkin@gmail.com">
+        <createTable tableName="role">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="user_id" type="int">
-                <constraints nullable="false"/>
             </column>
             <column name="role" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="4" author="alexandr.tsiulkin@gmail.com">
+    <changeSet id="5" author="alexandr.tsiulkin@gmail.com">
+        <createTable tableName="user_role">
+            <column name="role_id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="alexandr.tsiulkin@gmail.com">
         <addForeignKeyConstraint baseTableName="user_role" baseColumnNames="user_id"
                                  constraintName="fk_user_role_user"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
-    </changeSet>
-    <changeSet id="5" author="alexandr.tsiulkin@gmail.com">
-        <renameColumn tableName="user_role"
-                      oldColumnName="id"
-                      newColumnName="role_id"
-                      columnDataType="int"/>
-    </changeSet>
-    <changeSet id="6" author="alexandr.tsiulkin@gmail.com">
-        <renameColumn tableName="user_role"
-                      oldColumnName="role"
-                      newColumnName="role_name"
-                      columnDataType="varchar(10)"/>
+        <addForeignKeyConstraint baseTableName="user_role" baseColumnNames="role_id"
+                                 constraintName="fk_user_role_role"
+                                 referencedTableName="role"
+                                 referencedColumnNames="id"/>
     </changeSet>
     <changeSet id="7" author="alexandr.tsiulkin@gmail.com">
-        <addAutoIncrement columnDataType="int"
-                          columnName="role_id"
-                          incrementBy="1"
-                          schemaName="sweatter"
-                          startWith="1"
-                          tableName="user_role"/>
-    </changeSet>
-    <changeSet id="8" author="alexandr.tsiulkin@gmail.com">
-        <renameColumn tableName="user_role"
-                      oldColumnName="role_id"
-                      newColumnName="id"
-                      columnDataType="int"
-        />
-    </changeSet>
-    <changeSet id="9" author="alexandr.tsiulkin@gmail.com">
-        <addAutoIncrement columnDataType="int"
-                          columnName="id"
-                          incrementBy="1"
-                          schemaName="sweatter"
-                          startWith="1"
-                          tableName="user_role"/>
-    </changeSet>
-    <changeSet id="10" author="alexandr.tsiulkin@gmail.com">
-        <addColumn tableName="message">
-            <column name="user_id"
-                    position="4"
-                    type="int">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
+        <insert tableName="role">
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="role">
+            <column name="role" value="ADMIN"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

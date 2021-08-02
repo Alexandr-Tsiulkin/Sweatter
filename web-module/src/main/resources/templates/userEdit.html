@@ -5,13 +5,14 @@
     <title>User editor</title>
 </head>
 <body>
-<form method="post">
+<form th:action="@{/users}" method="post">
+    <input type="hidden" name="id" th:value="${user.id}">
     <input type="text" name="username" th:value="${user.username}">
     <label th:each="role : ${roles}">
         <div th:each="roleInUser : ${user.roles}">
-            <input type="checkbox" name="roleId" th:value="${role}" th:text="${role.name()}"
+            <input type="checkbox" name="roleNames" th:value="${role}" th:text="${role.name()}"
                    th:if="${roleInUser.roleName.equals(role.name())}" checked/>
-            <input type="checkbox" name="roleId" th:value="${role}" th:text="${role.name()}"
+            <input type="checkbox" name="roleNames" th:value="${role}" th:text="${role.name()}"
                    th:unless="${roleInUser.roleName.equals(role.name())}"/>
         </div>
     </label>

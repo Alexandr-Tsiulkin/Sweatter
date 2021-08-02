@@ -13,5 +13,5 @@ public interface UserService {
 
     List<ShowUserDTO> getAllUsers();
 
-    boolean save(EditUserDTO user);
+    boolean edit(EditUserDTO user);
 }

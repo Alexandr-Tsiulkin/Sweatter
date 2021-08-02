@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -38,10 +37,9 @@ public class UserController {
         return "userEdit";
     }
 
-    @PostMapping("/users/{user}")
-    public String userEdit(@RequestParam EditUserDTO user) {
-        log.info(user.toString());
-        //userService.save(user);
+    @PostMapping("/users")
+    public String userEdit(EditUserDTO editUser) {
+        userService.edit(editUser);
         return "redirect:/users";
     }
 }
