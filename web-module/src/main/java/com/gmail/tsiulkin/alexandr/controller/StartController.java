@@ -12,6 +12,6 @@ public class StartController {
 
     @GetMapping
     public String getStartPage() {
-        return "home";
+        return "index";
     }
 }
