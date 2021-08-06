@@ -34,7 +34,7 @@ public class UserController {
             @PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles", RoleEnum.values());
-        return "userEdit";
+        return "user-edit";
     }
 
     @PostMapping("/users")

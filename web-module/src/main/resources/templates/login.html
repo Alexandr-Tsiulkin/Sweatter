@@ -7,32 +7,36 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.rtl.css}">
 </head>
 <body class="bg-dark text-white">
-<div class="container mt-5">
+<div class="container mt-5 col-2">
+    <div th:if="${param.error}">
+        <div class="col-12 alert alert-danger">
+            Invalid username and password
+        </div>
+    </div>
+    <div th:if="${param.logout}">
+        <div class="col-12 alert alert-info">
+            You have been logged out
+        </div>
+    </div>
     <div class="row justify-content-center align-self-center">
         <form th:action="@{/login}" method="post">
-                <div class="form-group">
+                <div class="input-group mb-1 ">
                     <span class="input-group-text" id="basic-addon1">@</span>
                     <input aria-describedby="basic-addon1" aria-label="Username" class="form-control" id="username"
                            name="username"
                            placeholder="Username" required="true" type="email">
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <input aria-describedby="basic-addon1" aria-label="Password" class="form-control" id="password"
                            name="password"
                            placeholder="Password" required="true" type="password">
                 </div>
                 <div><input type="submit" class="btn btn-outline-success" value="Sign In"/></div>
             <div>
-                <h5>if you not registered? <a role="link" th:href="@{/registration}">Sign up</a></h5>
+                <h5>Are you not registered? <a role="link" th:href="@{/registration}">Sign up</a></h5>
             </div>
         </form>
     </div>
-</div>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
 </div>
 <script th:src="@{/js/bootstrap.bundle.js}"></script>
 </body>
