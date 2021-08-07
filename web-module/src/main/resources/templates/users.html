@@ -3,9 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.rtl.css}">
 </head>
-<body>
-<table>
+<body class="bg-dark text-white">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="navbar-brand" th:href="@{https://github.com/Alexandr-Tsiulkin/Sweatter}">Sweatter</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/home-admin}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/users}">Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/messages}">Messages</a>
+        </li>
+    </ul>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <ul class="navbar-nav align-items-end">
+            <li class="nav-item">
+                <span class="navbar-text" th:text="${#authentication.name}"></span>
+                <a class="btn btn-outline-success" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<table class="table table-dark container">
     <tr>
         <th>Username</th>
         <th>Roles</th>
@@ -14,8 +40,9 @@
     <tr th:each="user : ${users}">
         <td th:text="${user.username}"></td>
         <td th:text="${user.roles}"></td>
-        <td><a th:href="@{users/{id}(id=${user.id})}">edit user</a></td>
+        <td><a class="btn btn-outline-success" th:href="@{users/{id}(id=${user.id})}" role="button">edit user</a></td>
     </tr>
 </table>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
 </body>
 </html>

@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class HomeController {
 
-    @GetMapping(value = "/home")
-    public String getHomePage(){
+    @GetMapping(value = "/home-admin")
+    public String getHomePageAdmin(){
         return "home-admin";
+    }
+
+    @GetMapping(value = "/home-user")
+    public String getHomePageUser(){
+        return "home-user";
     }
 }

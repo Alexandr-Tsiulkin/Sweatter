@@ -10,3 +10,9 @@ services:
       - '3306:3306'
     expose:
       - '3306'
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025

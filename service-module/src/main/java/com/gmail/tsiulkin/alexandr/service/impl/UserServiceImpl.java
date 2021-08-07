@@ -6,6 +6,7 @@ import com.gmail.tsiulkin.alexandr.repository.model.Role;
 import com.gmail.tsiulkin.alexandr.repository.model.User;
 import com.gmail.tsiulkin.alexandr.service.UserService;
 import com.gmail.tsiulkin.alexandr.service.converter.UserConverter;
+import com.gmail.tsiulkin.alexandr.service.exception.UserAlreadyExistsException;
 import com.gmail.tsiulkin.alexandr.service.model.AddUserDTO;
 import com.gmail.tsiulkin.alexandr.service.model.EditUserDTO;
 import com.gmail.tsiulkin.alexandr.service.model.RoleEnum;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean save(AddUserDTO addUserDTO) {
+    public ShowUserDTO save(AddUserDTO addUserDTO) throws UserAlreadyExistsException {
         User userByUsername = userRepository.findByUsername(addUserDTO.getUsername());
         if (Objects.isNull(userByUsername)) {
             User user = userConverter.convert(addUserDTO);
@@ -44,9 +45,9 @@ public class UserServiceImpl implements UserService {
             user.getRoles().add(role);
             role.getUsers().add(user);
             userRepository.save(user);
-            return true;
+            return userConverter.convert(user);
         } else {
-            return false;
+            throw new UserAlreadyExistsException(String.format("User with username: %s already exists", addUserDTO.getUsername()));
         }
     }
 

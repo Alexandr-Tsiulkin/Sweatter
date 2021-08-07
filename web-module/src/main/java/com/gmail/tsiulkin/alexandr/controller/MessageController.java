@@ -36,12 +36,6 @@ public class MessageController {
         return "messages";
     }
 
-    @GetMapping("/messages/add")
-    public String addPage(Model model) {
-        model.addAttribute("AddMessage", new AddMessageDTO());
-        return "add-message";
-    }
-
     @PostMapping("/messages/add")
     public String add(
             @AuthenticationPrincipal UserLogin user,

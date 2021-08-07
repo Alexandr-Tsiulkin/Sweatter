@@ -1,27 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Messages</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.rtl.css}">
 </head>
-<body>
-<form method="post">
-    <input type="text" name="filter">
-    <button type="submit">Find</button>
-</form>
-<table>
-    <tr>
-        <th>Id</th>
-        <th>Text</th>
-        <th>Tag</th>
-        <th>Author</th>
-    </tr>
-    <tr th:each="message : ${messages}">
-        <td th:text="${message.id}"></td>
-        <td th:text="${message.text}"></td>
-        <td th:text="${message.tag}"></td>
-        <td th:text="${message.author.getUsername()}"></td>
-    </tr>
-</table>
+<body class="bg-dark text-white">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="navbar-brand" th:href="@{https://github.com/Alexandr-Tsiulkin/Sweatter}">Sweatter</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+            <a class="nav-link" th:href="@{/home-admin}">Admin home</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('USER')">
+            <a class="nav-link" th:href="@{/home-user}">User home</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+            <a class="nav-link" th:href="@{/users}">Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/messages}">Messages</a>
+        </li>
+    </ul>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <ul class="navbar-nav align-items-end">
+            <li class="nav-item">
+                <span class="navbar-text" th:text="${#authentication.name}"></span>
+                <a class="btn btn-outline-success" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="form-row">
+    <div class="form-group col-md-6 me-3">
+        <form method="post">
+            <label>
+                <input type="text" name="filter" class="form-control" placeholder="Search by tag">
+            </label>
+            <button class="btn btn-outline-success me-3" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+<a class="btn btn-outline-success m-lg-3" data-bs-toggle="collapse" href="#collapseExample" role="button"
+   aria-expanded="false"
+   aria-controls="collapseExample">
+    Add new Message
+</a>
+<div class="collapse" id="collapseExample">
+    <div class="form-group me-3 col-md-6">
+        <form method="post" action="/messages/add" th:object="${AddMessage}">
+            <div class="form-group mt-3">
+                <input type="text" name="text" class="form-control" placeholder="Write message">
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" name="tag" class="form-control" placeholder="Write tag">
+            </div>
+            <div class="form-group mt-3">
+                <button class="btn btn-outline-success" type="submit">add message</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card-group">
+    <div class="card text-dark my-3 me-3" th:each="message : ${messages}">
+        <div class="card-bod m-2">
+            <p class="fs-3" th:text="${message.text}"></p>
+            <i class="fs-5" th:text="${message.tag}"></i>
+        </div>
+        <div class="card-footer mt-xxl-auto">
+            <strong th:text="${message.author.getUsername()}"></strong>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
 </body>
 </html>
