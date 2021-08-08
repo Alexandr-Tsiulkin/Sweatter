@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,7 +41,8 @@ public class UserServiceImpl implements UserService {
             User user = userConverter.convert(addUserDTO);
             String encodePassword = passwordEncoder.encode(addUserDTO.getPassword());
             user.setPassword(encodePassword);
-            user.setActive(true);
+            user.setActive(false);
+            user.setActivatedCode(UUID.randomUUID().toString());
             Role role = roleRepository.findByRoleName(RoleEnum.USER.name());
             user.getRoles().add(role);
             role.getUsers().add(user);
@@ -79,5 +81,26 @@ public class UserServiceImpl implements UserService {
             }
         }
         return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean isDeleted(User user) {
+        userRepository.delete(user);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivatedCode(code);
+        if (Objects.nonNull(user)) {
+            user.setActivatedCode(null);
+            user.setActive(true);
+            userRepository.save(user);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

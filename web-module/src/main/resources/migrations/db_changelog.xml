@@ -34,6 +34,9 @@
             <column name="active" type="tinyint(1)">
                 <constraints nullable="false"/>
             </column>
+            <column name="activate_code" type="varchar(36)">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="3" author="alexandr.tsiulkin@gmail.com">
@@ -78,6 +81,17 @@
         </insert>
         <insert tableName="role">
             <column name="role" value="ADMIN"/>
+        </insert>
+    </changeSet>
+    <changeSet id="8" author="alexandr.tsiulkin@gmail.com">
+        <insert tableName="users">
+            <column name="username" value="administrator@gmail.com"/>
+            <column name="password" value="$2a$12$QhNupq7aZhgp4FHUrV5ClemdMoTYNv/JFD3Qp0jjE1feeowvOaxje"/>
+            <column name="active" value="1"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="role_id" value="2"/>
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'administrator@gmail.com')"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

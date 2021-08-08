@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/users/**")
                 .hasAuthority(RoleEnum.ADMIN.name())
-                .antMatchers("/login", "/registration", "/", "/css/**", "/js/**")
+                .antMatchers("/login", "/registration", "/", "/css/**", "/js/**","/activate/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

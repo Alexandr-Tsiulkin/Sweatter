@@ -4,7 +4,6 @@ import com.gmail.tsiulkin.alexandr.service.MailService;
 import com.gmail.tsiulkin.alexandr.service.model.ShowUserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -15,20 +14,20 @@ import org.springframework.stereotype.Service;
 public class MailServiceImpl implements MailService {
 
     private final JavaMailSender javaMailSender;
-    @Value("${spring.mail.username}")
-    private String recipientMail;
 
     @Override
-    public void sendMailAfterRegistration(ShowUserDTO showUser) {
-        SimpleMailMessage message = getMailMessageForAddUser(showUser, recipientMail);
+    public void sendMailForActivationUser(ShowUserDTO showUser) {
+        SimpleMailMessage message = getMailMessageForAddUser(showUser);
         javaMailSender.send(message);
     }
 
-    private SimpleMailMessage getMailMessageForAddUser(ShowUserDTO showUser, String recipientMail) {
+    private SimpleMailMessage getMailMessageForAddUser(ShowUserDTO showUser) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(recipientMail);
-        message.setSubject(String.format("Welcome to Sweatter, %s", showUser.getUsername()));
-        message.setText(String.format("Hello, %s! Your account was successfully created", showUser.getUsername()));
+        message.setTo(showUser.getUsername());
+        message.setSubject("Activation code");
+        message.setText(String.format("Hello, %s! \n" +
+                        "Welcome to Sweatter. Please, click this link for activate your email: http://localhost:8080/activate/%s",
+                showUser.getUsername(), showUser.getActivationCode()));
         return message;
     }
 }

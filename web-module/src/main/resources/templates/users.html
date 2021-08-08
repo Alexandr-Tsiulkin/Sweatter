@@ -32,15 +32,16 @@
     </div>
 </nav>
 <table class="table table-dark container">
-    <tr>
-        <th>Username</th>
-        <th>Roles</th>
-        <th>Action</th>
+    <tr class="align-items-center">
+        <th scope="col">Username</th>
+        <th scope="col">Roles</th>
+        <th colspan="2">Action</th>
     </tr>
     <tr th:each="user : ${users}">
         <td th:text="${user.username}"></td>
         <td th:text="${user.roles}"></td>
         <td><a class="btn btn-outline-success" th:href="@{users/{id}(id=${user.id})}" role="button">edit user</a></td>
+        <td><a class="btn btn-outline-warning" th:href="@{users/delete/{id}(id=${user.id})}" role="button">delete</a></td>
     </tr>
 </table>
 <script th:src="@{/js/bootstrap.bundle.js}"></script>

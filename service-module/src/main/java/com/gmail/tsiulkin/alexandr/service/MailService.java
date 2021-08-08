@@ -4,5 +4,5 @@ import com.gmail.tsiulkin.alexandr.service.model.ShowUserDTO;
 
 public interface MailService {
 
-    void sendMailAfterRegistration(ShowUserDTO showUser);
+    void sendMailForActivationUser(ShowUserDTO showUser);
 }

@@ -31,6 +31,7 @@ public class UserConverterImpl implements UserConverter {
                 showUserDTO.getRoles().add(roleName);
             }
         }
+        showUserDTO.setActivationCode(user.getActivatedCode());
         return showUserDTO;
     }
 }
