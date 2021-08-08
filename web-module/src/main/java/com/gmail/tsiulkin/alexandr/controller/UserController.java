@@ -2,14 +2,17 @@ package com.gmail.tsiulkin.alexandr.controller;
 
 import com.gmail.tsiulkin.alexandr.repository.model.User;
 import com.gmail.tsiulkin.alexandr.service.UserService;
+import com.gmail.tsiulkin.alexandr.service.exception.NotFoundException;
 import com.gmail.tsiulkin.alexandr.service.model.EditUserDTO;
 import com.gmail.tsiulkin.alexandr.service.model.RoleEnum;
 import com.gmail.tsiulkin.alexandr.service.model.ShowUserDTO;
+import com.gmail.tsiulkin.alexandr.service.model.UpdateUserDTO;
+import com.gmail.tsiulkin.alexandr.service.model.UserLogin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,5 +52,20 @@ public class UserController {
             @PathVariable User user) {
         userService.isDeleted(user);
         return "redirect:/users";
+    }
+
+    @GetMapping("/profile")
+    public String profile(
+            Model model, UserLogin user) {
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile(
+            @AuthenticationPrincipal UserLogin user,
+            UpdateUserDTO updateUser) throws NotFoundException {
+        userService.updateUser(user, updateUser);
+        return "redirect:/profile";
     }
 }

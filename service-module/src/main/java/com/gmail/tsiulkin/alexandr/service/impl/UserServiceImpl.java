@@ -6,15 +6,19 @@ import com.gmail.tsiulkin.alexandr.repository.model.Role;
 import com.gmail.tsiulkin.alexandr.repository.model.User;
 import com.gmail.tsiulkin.alexandr.service.UserService;
 import com.gmail.tsiulkin.alexandr.service.converter.UserConverter;
+import com.gmail.tsiulkin.alexandr.service.exception.NotFoundException;
 import com.gmail.tsiulkin.alexandr.service.exception.UserAlreadyExistsException;
 import com.gmail.tsiulkin.alexandr.service.model.AddUserDTO;
 import com.gmail.tsiulkin.alexandr.service.model.EditUserDTO;
 import com.gmail.tsiulkin.alexandr.service.model.RoleEnum;
 import com.gmail.tsiulkin.alexandr.service.model.ShowUserDTO;
+import com.gmail.tsiulkin.alexandr.service.model.UpdateUserDTO;
+import com.gmail.tsiulkin.alexandr.service.model.UserLogin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -101,6 +105,23 @@ public class UserServiceImpl implements UserService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public ShowUserDTO updateUser(UserLogin userLogin, UpdateUserDTO updateUser) throws NotFoundException {
+        User user = userRepository.findByUsername(userLogin.getUsername());
+        if (Objects.nonNull(user)) {
+            String newPassword = updateUser.getPassword();
+            if (StringUtils.hasText(newPassword)) {
+                String encodePassword = passwordEncoder.encode(newPassword);
+                user.setPassword(encodePassword);
+            }
+            userRepository.save(user);
+            return userConverter.convert(user);
+        } else {
+            throw new NotFoundException(String.format("User with %s was not found", userLogin.getUsername()));
         }
     }
 }

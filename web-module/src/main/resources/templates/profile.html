@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.rtl.css}">
+</head>
+<body class="bg-dark text-white">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="navbar-brand" th:href="@{https://github.com/Alexandr-Tsiulkin/Sweatter}">Sweatter</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+            <a class="nav-link" th:href="@{/home-admin}">Admin home</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('USER')">
+            <a class="nav-link" th:href="@{/home-user}">User home</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+            <a class="nav-link" th:href="@{/users}">Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/messages}">Messages</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/profile}">Profile</a>
+        </li>
+    </ul>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <ul class="navbar-nav align-items-end">
+            <li class="nav-item">
+                <span class="navbar-text" th:text="${#authentication.name}"></span>
+                <a class="btn btn-outline-success" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-5 col-2">
+    <div class="row justify-content-center align-self-center">
+        <form method="post">
+            <div class="form-group mb-1">
+                <input aria-describedby="basic-addon1" aria-label="Password" class="form-control" id="password"
+                       name="password"
+                       placeholder="New password" required="true" type="password">
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-outline-success" value="Save"/>
+            </div>
+        </form>
+    </div>
+</div>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+</body>
+</html>
