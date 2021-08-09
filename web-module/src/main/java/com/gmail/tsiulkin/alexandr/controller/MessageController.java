@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,7 @@ public class MessageController {
     public String getMessages(Model model) {
         List<ShowMessageDTO> messages = messageService.getAllMessages();
         model.addAttribute("messages", messages);
+        model.addAttribute("addMessageDTO", new AddMessageDTO());
         return "messages";
     }
 
@@ -39,7 +41,11 @@ public class MessageController {
     @PostMapping("/messages/add")
     public String add(
             @AuthenticationPrincipal UserLogin user,
-            @Valid AddMessageDTO addMessageDTO) throws NotFoundException {
+            @Valid AddMessageDTO addMessageDTO,
+            BindingResult errors) throws NotFoundException {
+        if (errors.hasErrors()){
+            return "messages";
+        }
         messageService.persist(addMessageDTO, user);
         return "redirect:/messages";
     }

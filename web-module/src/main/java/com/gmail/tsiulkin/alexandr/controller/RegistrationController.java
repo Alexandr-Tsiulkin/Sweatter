@@ -9,9 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 @Log4j2
@@ -22,15 +25,20 @@ public class RegistrationController {
     private final MailService mailService;
 
     @GetMapping("/registration")
-    public String getStartPage() {
+    public String getStartPage(Model model) {
+        model.addAttribute("addUserDTO", new AddUserDTO());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(AddUserDTO user, Model model) throws UserAlreadyExistsException {
-        ShowUserDTO showUser = userService.save(user);
-        mailService.sendMailForActivationUser(showUser);
-        return "redirect:/login";
+    public String addUser(@Valid AddUserDTO addUserDTO, BindingResult errors) throws UserAlreadyExistsException {
+        if (errors.hasErrors()) {
+            return "registration";
+        } else {
+            ShowUserDTO showUser = userService.save(addUserDTO);
+            mailService.sendMailForActivationUser(showUser);
+            return "redirect:/login";
+        }
     }
 
     @GetMapping("/activate/{code}")

@@ -52,15 +52,18 @@
    aria-controls="collapseExample">
     Add new Message
 </a>
+<!--th:class="${#fields.hasAnyErrors()}"-->
 <div class="collapse" id="collapseExample">
     <div class="form-group me-3 col-md-6">
-        <form method="post" action="/messages/add" th:object="${AddMessage}">
-            <div class="form-group mt-3">
-                <input type="text" name="text" class="form-control" placeholder="Write message">
+        <form method="post" action="/messages/add" th:object="${addMessageDTO}">
+            <div class="form-group mt-3 has-validation">
+                <input type="text" name="text" class="form-control" placeholder="Write message" th:field="*{text}">
             </div>
-            <div class="form-group mt-3">
-                <input type="text" name="tag" class="form-control" placeholder="Write tag">
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
+            <div class="form-group mt-3 has-validation">
+                <input type="text" name="tag" class="form-control" placeholder="Write tag" th:field="*{tag}">
             </div>
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}"></div>
             <div class="form-group mt-3">
                 <button class="btn btn-outline-success" type="submit">add message</button>
             </div>
