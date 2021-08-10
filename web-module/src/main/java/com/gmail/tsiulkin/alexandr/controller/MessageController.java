@@ -42,8 +42,12 @@ public class MessageController {
     public String add(
             @AuthenticationPrincipal UserLogin user,
             @Valid AddMessageDTO addMessageDTO,
-            BindingResult errors) throws NotFoundException {
+            BindingResult errors,
+            Model model) throws NotFoundException {
         if (errors.hasErrors()){
+            model.addAttribute("trigger",true);
+            List<ShowMessageDTO> messages = messageService.getAllMessages();
+            model.addAttribute("messages", messages);
             return "messages";
         }
         messageService.persist(addMessageDTO, user);

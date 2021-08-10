@@ -52,10 +52,9 @@
    aria-controls="collapseExample">
     Add new Message
 </a>
-<!--th:class="${#fields.hasAnyErrors()}"-->
-<div class="collapse" id="collapseExample">
-    <div class="form-group me-3 col-md-6">
-        <form method="post" action="/messages/add" th:object="${addMessageDTO}">
+<div class="form-group me-3 col-md-6">
+    <form method="post" action="/messages/add" th:object="${addMessageDTO}">
+        <div id="collapseExample" th:class="${#fields.hasAnyErrors()} ? show : collapse">
             <div class="form-group mt-3 has-validation">
                 <input type="text" name="text" class="form-control" placeholder="Write message" th:field="*{text}">
             </div>
@@ -67,8 +66,8 @@
             <div class="form-group mt-3">
                 <button class="btn btn-outline-success" type="submit">add message</button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 <div class="card-group">
     <div class="card text-dark my-3 me-3" th:each="message : ${messages}">

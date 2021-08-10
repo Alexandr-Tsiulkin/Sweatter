@@ -44,10 +44,14 @@ public class UserController {
         return "user-edit";
     }
 
-    @PostMapping("/users")
-    public String userEdit(@Valid EditUserDTO editUserDTO,
+    @PostMapping("/users/{user}")
+    public String userEdit(@PathVariable User user,
+                           Model model,
+                           @Valid EditUserDTO editUserDTO,
                            BindingResult errors) {
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
+            model.addAttribute("user", user);
+            model.addAttribute("roles", RoleEnum.values());
             return "user-edit";
         }
         userService.edit(editUserDTO);
